@@ -43,11 +43,12 @@ describe CheckpointTimer::Timer do
         expect(subject).to be > 0
       end
 
-      context 'when logging is enabled' do
+      context 'when logging is enabled at the method level' do
         context 'and message is nil' do
           subject do
             instance.checkpoint(logging: true)
           end
+
           it 'logs checkpoint to standard out' do
             expect { subject }.to output(/Checkpoint/).to_stdout
           end
@@ -58,6 +59,32 @@ describe CheckpointTimer::Timer do
 
           subject do
             instance.checkpoint(logging: true, message: message)
+          end
+
+          it 'outputs message' do
+            expect{ subject }.to output(/#{message}/).to_stdout
+          end
+        end
+      end
+
+      context 'when logging is enabled at the instance level' do
+        let(:instance) { described_class.new(log_all: true) }
+
+        context 'and message is nil' do
+          subject do
+            instance.checkpoint
+          end
+
+          it 'logs checkpoint to standard out' do
+            expect { subject }.to output(/Checkpoint/).to_stdout
+          end
+        end
+
+        context 'and message is present' do
+          let(:message) { 'hello' }
+
+          subject do
+            instance.checkpoint(message: message)
           end
 
           it 'outputs message' do
