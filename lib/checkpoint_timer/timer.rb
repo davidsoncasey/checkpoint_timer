@@ -8,7 +8,12 @@ module CheckpointTimer
     attr_reader :current_time,
                 :previous_time,
                 :start_time,
-                :checkpoint_counter
+                :checkpoint_counter,
+                :log_all
+
+    def initialize(log_all: false)
+      @log_all = log_all
+    end
 
     def start
       @checkpoint_counter = 0
@@ -24,7 +29,7 @@ module CheckpointTimer
       set_current_time
       iterate_counter
 
-      log_checkpoint(message) if logging
+      log_checkpoint(message) if logging || log_all?
       elapsed_time
     end
 
@@ -53,6 +58,11 @@ module CheckpointTimer
     # @return [Fixnum]
     def elapsed_time
       current_time - previous_time
+    end
+
+    # @return [Boolean]
+    def log_all?
+      !!log_all
     end
   end
 end
