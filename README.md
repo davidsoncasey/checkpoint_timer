@@ -1,8 +1,8 @@
 # CheckpointTimer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/checkpoint_timer`. To experiment with that code, run `bin/console` for an interactive prompt.
+Checkpoint Timer is a gem to provide a very lightweight Ruby stopwatch timer.
 
-TODO: Delete this and the text above, and describe your gem
+The impetus for this was some performance diagnostic work that I was doing. I wanted to see how long different method calls were taking, but wanted something more lightweight than Ruby's Benchmark library.
 
 ## Installation
 
@@ -22,20 +22,39 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To use the timer, create an instance of the timer class.
+```Ruby
+timer = CheckpointTimer::Timer.new
+timer.start
+# ... execute code here
+timer.checkpoint(logging: true, message: 'First checkpoint')
+# ... execute some more code
+timer.checkpoint(logging: true, message: 'Second checkpoint')
+```
+
+The timer can also be used without logging, if you wish to use the data differently
+```ruby
+timer = CheckpointTimer::Timer.new
+timer.start
+# ... execute code here
+elapsed_time = timer.checkpoint
+```
+The `CheckpointTimer::Timer#checkpoint` method returns the elapsed time in seconds since the previous checkpoint.
+
+Logging can also be enabled at the instance level.
+```ruby
+timer = CheckpointTimer::Timer.new(log_all: true)
+timer.start
+# ... execute code here
+elapsed_time = timer.checkpoint(message: 'Global logging is enabled')
+```
 
 ## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/checkpoint_timer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
-
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
