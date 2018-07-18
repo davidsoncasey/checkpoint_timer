@@ -37,8 +37,8 @@ module CheckpointTimer
 
     # @param message [String]
     def log_checkpoint(message)
-      puts message if message
       puts "Checkpoint: #{checkpoint_counter}"
+      puts message if message
       puts "Elapsed time since last checkpoint: #{format('%.3f', elapsed_time)}"
     end
 
